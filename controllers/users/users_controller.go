@@ -1,6 +1,7 @@
 package users
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -17,10 +18,19 @@ func GetUser(c *gin.Context) {
 // CreateUser -
 func CreateUser(c *gin.Context) {
 	var user users.User
-	fmt.Println(user)
 	bytes, err := ioutil.ReadAll(c.Request.Body)
-	fmt.Println(err)
+	if err != nil {
+		//handle error
+		return
+	}
+	if err := json.Unmarshal(bytes, &user); err != nil {
+		fmt.Println(err.Error())
+		//handle json error
+		return
+	}
+	fmt.Println(user)
 	fmt.Println(string(bytes))
+	fmt.Println(err)
 	c.String(http.StatusNotImplemented, "implement me!")
 }
 
