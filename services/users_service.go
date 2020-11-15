@@ -7,5 +7,8 @@ import (
 
 // CreateUser -
 func CreateUser(user users.User) (*users.User, *errors.RestErr) {
-	return &user, nil
+	if err := user.Validate(); err != nil {
+		return nil, err
+	}
+	return nil, nil
 }
